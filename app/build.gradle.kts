@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.retrofit.nw)
     implementation(libs.retrofit.gson)
    implementation(libs.moshi.kotlin)
+    implementation(libs.hilt.core)
+    implementation(libs.hilt.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
