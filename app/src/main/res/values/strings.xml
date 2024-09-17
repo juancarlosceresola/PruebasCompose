@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PruebasCompose</string>
+    <string name="app_key" translatable="false">9cc6082faac1afc533d8e44dd2d3ef73</string>
+    <string name="base_url" translatable="false">https://api.themoviedb.org/3/</string>
 </resources>
