@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
 
     private fun iniciar() {
         lifecycleScope.launch {
-            Network.apiService.getPeliculas(getString(R.string.app_key), "es-ES")
+            Network.apiService.getPeliculas()
         }
     }
 }
