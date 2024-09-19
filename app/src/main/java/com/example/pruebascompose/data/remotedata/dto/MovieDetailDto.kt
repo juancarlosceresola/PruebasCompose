@@ -1,8 +1,8 @@
-package com.example.pruebascompose.data.remotedata
+package com.example.pruebascompose.data.remotedata.dto
 
 import com.squareup.moshi.Json
 
-data class MovieDto(
+data class MovieDetailDto(
     @Json(name="adult") val adult : Boolean,
     @Json(name="backdrop_path") val backdrop_path : String,
     @Json(name="genre_ids") val genre_ids : List<Int>,
