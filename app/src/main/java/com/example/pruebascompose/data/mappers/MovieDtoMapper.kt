@@ -11,7 +11,6 @@ fun MovieDetailDto.toMovie() = Movie(
     vote_average = this.vote_average,
     overview = this.overview,
     release_date = this.release_date,
-    genre_ids = this.genre_ids,
     original_title = this.original_title,
     video = this.video,
     vote_count = this.vote_count,

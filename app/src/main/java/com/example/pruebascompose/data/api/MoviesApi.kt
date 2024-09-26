@@ -12,5 +12,5 @@ interface MoviesApi {
     suspend fun getPeliculas(): Response<PagingResultDto>
 
     @GET("movie/{id_Pelicula}")
-    suspend fun getPeliculaDetalle(@Path("id_Pelicula") id_Pelicula:String, @Query("api_key") api_key: String, @Query("language") language:String ): Response<MovieDetailDto>
+    suspend fun getPeliculaDetalle(@Path("id_Pelicula") id_Pelicula:String, @Query("language") language:String ): Response<MovieDetailDto>
 }
