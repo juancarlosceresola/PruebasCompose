@@ -12,11 +12,15 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
+import com.example.pruebascompose.data.remotedata.Network
 import com.example.pruebascompose.ui.theme.PruebasComposeTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        iniciar()
         enableEdgeToEdge()
         setContent {
             PruebasComposeTheme {
@@ -27,6 +31,12 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+    }
+
+    private fun iniciar() {
+        lifecycleScope.launch {
+            Network.apiService.getPeliculas()
         }
     }
 }

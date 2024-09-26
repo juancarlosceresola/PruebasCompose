@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PruebasCompose</string>
+    <string name="app_key" translatable="false">9cc6082faac1afc533d8e44dd2d3ef73</string>
+    <string name="base_url" translatable="false">https://api.themoviedb.org/3/</string>
+    <string name ="token" translatable="false">Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5Y2M2MDgyZmFhYzFhZmM1MzNkOGU0NGRkMmQzZWY3MyIsIm5iZiI6MTcyNjU5MzQxMC40MTEzMzUsInN1YiI6IjYxMTEwYWM0Mzg3NjUxMDA2MDRiZDVjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.skXz7S0Zb7kAOFQuxZw4njZ0r24GWPQwB-IqawGPxe8</string>
 </resources>
