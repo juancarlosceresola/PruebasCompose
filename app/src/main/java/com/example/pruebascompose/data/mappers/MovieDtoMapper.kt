@@ -5,7 +5,7 @@ import com.example.pruebascompose.data.remotedata.dto.MovieDetailDto
 
 fun MovieDetailDto.toMovie() = Movie(
     adult = this.adult,
-    poster_path = this.poster_path,
+    poster_path = "https://image.tmdb.org/t/p/original"+this.poster_path,
     original_language = this.original_language,
     title = this.title,
     vote_average = this.vote_average,
