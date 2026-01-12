@@ -6,12 +6,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
 
     @Provides
+    @Singleton
     fun provideMovieDataSource(moviesApi: MoviesApi): MovieDataSource {
         return MovieDataSource(moviesApi)
     }
