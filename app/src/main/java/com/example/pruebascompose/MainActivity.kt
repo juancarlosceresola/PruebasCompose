@@ -64,8 +64,8 @@ class MainActivity : ComponentActivity() {
         var mostrar by remember { mutableStateOf("") }
 
         LaunchedEffect(key1 = Unit) {
-            val l = NetworkModule.apiService.getPeliculas().parseResponse().toPagingResult()
-            pagingResult = l.results
+//            val l = NetworkModule.getPeliculas().parseResponse().toPagingResult()
+//            pagingResult = l.results
         }
 
 
