@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,18 +40,27 @@ import com.example.pruebascompose.data.local.Movie
 import com.example.pruebascompose.data.mappers.toPagingResult
 import com.example.pruebascompose.data.di.NetworkModule
 import com.example.pruebascompose.ui.theme.PruebasComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val mainViewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
         setContent {
+            val mainState by mainViewModel.mainState.collectAsState()
             PruebasComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+                    LaunchedEffect(key1 = Unit) {
+                        mainViewModel.getMovies()
+                    }
                     iniciar(
                         modifier = Modifier.padding(innerPadding),
+                        list = mainState.movies
                     )
                     }
                 }
@@ -58,15 +69,14 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun iniciar( modifier: Modifier = Modifier) {
+    private fun iniciar( modifier: Modifier = Modifier,list:List<Movie>) {
         var launch by remember { mutableStateOf(false) }
         var pagingResult by remember { mutableStateOf<List<Movie>>(listOf()) }
         var mostrar by remember { mutableStateOf("") }
-
-        LaunchedEffect(key1 = Unit) {
-//            val l = NetworkModule.getPeliculas().parseResponse().toPagingResult()
-//            pagingResult = l.results
+        LaunchedEffect(key1 = launch) {
+            pagingResult = list
         }
+
 
 
 

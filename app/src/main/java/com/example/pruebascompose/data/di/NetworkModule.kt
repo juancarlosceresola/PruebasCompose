@@ -33,7 +33,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("APINetwork")
+
     fun provideNetwork(moshi: Moshi): MoviesApi {
         val okHttpClientBuilder = OkHttpClient.Builder()
             .addInterceptor(AuthorizationInterceptor())

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -46,6 +48,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                excludes += "META-INF/gradle/incremental.annotation.processors"
+
         }
     }
 }
@@ -67,6 +71,8 @@ dependencies {
     implementation(libs.hilt.core)
     implementation(libs.hilt.android)
     implementation(libs.coil.compose)
+    implementation(libs.hilt.navigation)
+    ksp(libs.hilt.compiler)
     implementation(libs.moshi.adapters)
     implementation(libs.retrofit.moshi)
     implementation(libs.retrofit.scalars)
