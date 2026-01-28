@@ -82,8 +82,8 @@ class MainActivity : ComponentActivity() {
 
          Column {
              LazyColumn {
-                 items(pagingResult.size) { movie->
-                     ElementMovie(pagingResult[movie]){ title->
+                 items(list.size) { movie->
+                     ElementMovie(list[movie]){ title->
                         mostrar = title
                      }
                  }
