@@ -13,6 +13,7 @@ retrofit_gson = "2.11.0"
 okhttp = "4.12.0"
 moshi = "1.15.0"
 hilt = "2.50"
+coil = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,8 @@ moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt"}
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"}
 hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "hilt"}
+
+coil-compose ={module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 
 [plugins]
