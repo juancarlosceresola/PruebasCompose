@@ -54,7 +54,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainState by mainViewModel.mainState.collectAsState()
             PruebasComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    bottomBar ={ BottomBar()}) { innerPadding ->
+
                     LaunchedEffect(key1 = Unit) {
                         mainViewModel.getMovies()
                     }
@@ -98,8 +100,8 @@ class MainActivity : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally) {
                 AsyncImage(
                     modifier = Modifier
-                        .width(150.dp)
-                        .height(200.dp)
+                        .width(250.dp)
+                        .height(300.dp)
                         .padding(20.dp)
                         .clickable {
                             onCLick(movie.title)
@@ -115,13 +117,14 @@ class MainActivity : ComponentActivity() {
 
 
             Text(modifier = Modifier.padding(start = 8.dp,
-                end = 8.dp,top = 8.dp,bottom = 18.dp)
+                end = 8.dp,top = 8.dp,bottom = 8.dp)
 
                 .fillMaxWidth(),
                 text = movie.title,
-                fontSize = 25.sp,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                lineHeight = 35.sp
                  )
 
             Text(modifier = Modifier.padding(16.dp)
@@ -138,7 +141,13 @@ class MainActivity : ComponentActivity() {
         val snackbarHostState = SnackbarHostState()
             snackbarHostState.showSnackbar(message = title)
     }
-
+    fun getBottomNavigationItems(): List<BottomBartems.BottomBarItem> {
+        return listOf(
+            BottomBartems.BottomBarItem.Home,
+            BottomBartems.BottomBarItem.Search,
+            BottomBartems.BottomBarItem.Settings
+        )
+    }
     @Composable
     fun Greeting(name: String, modifier: Modifier = Modifier) {
         var f = name

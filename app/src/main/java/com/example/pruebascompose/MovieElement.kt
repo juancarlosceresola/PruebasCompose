@@ -26,8 +26,8 @@ fun Movie(movie: Movie,){
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(8.dp))
-            .width(150.dp)
-            .height(200.dp)
+            .width(250.dp)
+            .height(350.dp)
             .clickable {
 
             },
