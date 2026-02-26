@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.hilt.android)
+
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -72,6 +74,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.coil.compose)
     implementation(libs.hilt.navigation)
+    implementation(libs.navigation.android)
     ksp(libs.hilt.compiler)
     implementation(libs.moshi.adapters)
     implementation(libs.retrofit.moshi)
@@ -83,4 +86,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.kotlinx.serialization.json)
 }
