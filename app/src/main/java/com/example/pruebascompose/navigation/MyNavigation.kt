@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.pruebascompose.MainActivity
+import androidx.navigation.toRoute
+import com.example.pruebascompose.composables.MovieListScreen
+import com.example.pruebascompose.composables.MovieScreen
+import com.example.pruebascompose.data.local.Movie
 
 @Composable
 fun MiAppNavegacion() {
@@ -12,22 +15,19 @@ fun MiAppNavegacion() {
 
     NavHost(
         navController = navController,
-        startDestination = PantallaInicio.toString() // Pantalla de salida
+        startDestination = PantallaInicio
     ) {
-        // Definimos la pantalla de Inicio
         composable<PantallaInicio> {
-            iniciar(
-                onIrADetalle = { id ->
-                    navController.navigate(PantallaDetalle(usuarioId = id))
+            MovieListScreen(
+                onMovieClick = { movie: Movie ->
+                    navController.navigate(PantallaDetalle(movie = movie))
                 }
             )
         }
 
-        // Definimos la pantalla de Detalle
         composable<PantallaDetalle> { backStackEntry ->
-            // Obtenemos los argumentos automáticamente
-            val detalle = backStackEntry <PantallaDetalle>()
-            DetalleScreen(id = detalle.usuarioId)
+            val detalle = backStackEntry.toRoute<PantallaDetalle>()
+            MovieScreen(movie = detalle.movie, onCLick = {})
         }
     }
 }

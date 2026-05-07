@@ -43,7 +43,7 @@ retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.re
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 retrofit-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
-navigation-android = { module = "androidx.navigation:navigation-compose-ktx", version.ref = "navigation" }
+navigation-android = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 

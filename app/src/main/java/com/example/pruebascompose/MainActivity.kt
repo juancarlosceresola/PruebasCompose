@@ -39,6 +39,7 @@ import com.example.pruebascompose.core.extensions.parseResponse
 import com.example.pruebascompose.data.local.Movie
 import com.example.pruebascompose.data.mappers.toPagingResult
 import com.example.pruebascompose.data.di.NetworkModule
+import com.example.pruebascompose.navigation.MiAppNavegacion
 import com.example.pruebascompose.ui.theme.PruebasComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,20 +53,12 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            val mainState by mainViewModel.mainState.collectAsState()
             PruebasComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LaunchedEffect(key1 = Unit) {
-                        mainViewModel.getMovies()
-                    }
-                    iniciar(
-                        modifier = Modifier.padding(innerPadding),
-                        list = mainState.movies
-                    )
-                    }
+                    MiAppNavegacion()
                 }
-
             }
+        }
     }
 
     @Composable

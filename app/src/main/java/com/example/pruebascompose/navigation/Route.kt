@@ -1,5 +1,6 @@
 package com.example.pruebascompose.navigation
 
+import com.example.pruebascompose.data.local.Movie
 import kotlinx.serialization.Serializable
 
 
@@ -7,4 +8,4 @@ import kotlinx.serialization.Serializable
 object PantallaInicio
 
 @Serializable
-data class PantallaDetalle(val usuarioId: String) // Ejemplo con argumento
+data class PantallaDetalle(val movie: Movie)

@@ -1,5 +1,8 @@
 package com.example.pruebascompose.data.local
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Movie(
     val adult: Boolean,
     val backdrop_path: String,
