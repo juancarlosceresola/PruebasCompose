@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PruebasComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MiAppNavegacion()
+                    MiAppNavegacion(innerPadding)
                 }
             }
         }

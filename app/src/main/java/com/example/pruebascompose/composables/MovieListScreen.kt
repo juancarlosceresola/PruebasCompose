@@ -1,6 +1,8 @@
 package com.example.pruebascompose.composables
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,7 +13,10 @@ import com.example.pruebascompose.MainActivityViewModel
 import com.example.pruebascompose.data.local.Movie
 
 @Composable
-fun MovieListScreen(onMovieClick: (Movie) -> Unit) {
+fun MovieListScreen(
+    innerPadding: PaddingValues = PaddingValues(),
+    onMovieClick: (Movie) -> Unit
+) {
     val viewModel: MainActivityViewModel = hiltViewModel()
     val state by viewModel.mainState.collectAsState()
 
@@ -19,11 +24,11 @@ fun MovieListScreen(onMovieClick: (Movie) -> Unit) {
         viewModel.getMovies()
     }
 
-    Column {
+    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
         LazyColumn {
             items(state.movies.size) { index ->
                 val movie = state.movies[index]
-                MovieScreen(movie = movie, onCLick = { onMovieClick(movie) })
+                MovieItemOverlay(movie = movie, onCLick = { onMovieClick(movie) })
             }
         }
     }

@@ -1,6 +1,6 @@
 [versions]
 agp = "8.5.2"
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -18,7 +18,7 @@ ksp = "2.0.21-1.0.28"
 hiltNavigationCompose = "1.2.0"
 timber = "5.0.1"
 navigation ="2.8.9"
-kotlinx-serialization-json = "1.10.0"
+kotlinx-serialization-json = "1.7.3"
 
 [libraries]
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
