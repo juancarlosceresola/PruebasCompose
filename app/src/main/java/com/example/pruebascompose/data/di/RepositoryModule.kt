@@ -1,7 +1,7 @@
 package com.example.pruebascompose.data.di
 
-import com.example.pruebascompose.data.api.MoviesApi
 import com.example.pruebascompose.data.remotedata.MovieDataSource
+import com.example.pruebascompose.data.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,12 +10,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataSourceModule {
+object RepositoryModule {
 
-    @Provides
-    @Singleton
-    fun provideMovieDataSource(moviesApi: MoviesApi): MovieDataSource {
-        return MovieDataSource(moviesApi)
-    }
+@Provides
+@Singleton
+fun provideMovieRepository(
+    movieDataSource: MovieDataSource
+): MovieRepository = MovieRepository(movieDataSource)
 
 }

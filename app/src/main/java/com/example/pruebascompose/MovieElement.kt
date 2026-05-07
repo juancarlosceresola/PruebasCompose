@@ -1,5 +1,6 @@
 package com.example.pruebascompose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,18 +20,19 @@ import com.example.pruebascompose.domain.bo.BasicMovieBO
 import com.example.pruebascompose.domain.bo.MovieBO
 
 @Composable
-fun Movie(movie: Movie){
+fun Movie(movie: Movie,){
     Row {
-
-
     AsyncImage(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(8.dp))
             .width(150.dp)
-            .height(200.dp),
+            .height(200.dp)
+            .clickable {
+
+            },
         model = ImageRequest.Builder(LocalContext.current)
-            .data(movie.poster_path.toUri())
+            .data(movie.poster_path)
             .crossfade(false)
             .build(),
         contentDescription = "Live image picture",
