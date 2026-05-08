@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PruebasCompose"
+rootProject.name = "PelisCompose_v1"
 include(":app")

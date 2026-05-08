@@ -1,6 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.hilt.android)
+
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -33,8 +38,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
+        }
     }
     buildFeatures {
         compose = true
@@ -45,6 +52,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                excludes += "META-INF/gradle/incremental.annotation.processors"
+
         }
     }
 }
@@ -59,6 +68,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.okhttp)
+    implementation(libs.retrofit.nw)
+    implementation(libs.retrofit.gson)
+   implementation(libs.moshi.kotlin)
+    implementation(libs.hilt.core)
+    implementation(libs.hilt.android)
+    implementation(libs.coil.compose)
+    implementation(libs.hilt.navigation)
+    implementation(libs.navigation.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.moshi.adapters)
+    implementation(libs.retrofit.moshi)
+    implementation(libs.retrofit.scalars)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +88,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.kotlinx.serialization.json)
 }
