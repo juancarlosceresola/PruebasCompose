@@ -11,6 +11,9 @@ interface MoviesApi {
     @GET("movie/popular")
     suspend fun getPeliculas(): Response<PagingResultDto>
 
+    @GET("movie/top_rated")
+    suspend fun getTopFilms(): Response<PagingResultDto>
+
     @GET("movie/{id_Pelicula}")
     suspend fun getPeliculaDetalle(@Path("id_Pelicula") id_Pelicula:String, @Query("language") language:String ): Response<MovieDetailDto>
 }

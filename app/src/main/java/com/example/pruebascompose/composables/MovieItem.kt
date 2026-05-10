@@ -77,7 +77,7 @@ fun MovieItemEditorial(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = movie.title,
+            text = movie.overview,
             style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -124,7 +124,7 @@ fun MovieItemRow(
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                text = movie.title,
+                text = movie.overview,
                 style = MaterialTheme.typography.bodySmall.copy(lineHeight = 18.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
@@ -191,7 +191,7 @@ fun MovieItemOverlay(
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                text = movie.title,
+                text = movie.overview,
                 color = Color.White.copy(alpha = 0.85f),
                 style = MaterialTheme.typography.bodySmall.copy(lineHeight = 18.sp),
                 maxLines = 2,

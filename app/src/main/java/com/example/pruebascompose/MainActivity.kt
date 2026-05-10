@@ -54,9 +54,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PruebasComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MiAppNavegacion(innerPadding)
-                }
+                MiAppNavegacion()
             }
         }
     }
