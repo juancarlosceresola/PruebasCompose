@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.movies.ui.detail.MovieDetailScreen
 import com.example.pruebascompose.composables.MovieListScreen
 import com.example.pruebascompose.composables.MovieScreen
 import com.example.pruebascompose.data.local.Movie
@@ -48,7 +49,7 @@ fun MiAppNavegacion() {
             }
             composable<PantallaDetalle>(typeMap = movieTypeMap) { backStackEntry ->
                 val detalle = backStackEntry.toRoute<PantallaDetalle>()
-                MovieScreen(movie = detalle.movie, onCLick = {})
+                MovieDetailScreen(movie = detalle.movie, onBack = { navController.popBackStack() })
             }
         }
     }
