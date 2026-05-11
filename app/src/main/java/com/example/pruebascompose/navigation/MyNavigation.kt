@@ -11,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.movies.ui.detail.MovieDetailScreen
+import com.example.movies.ui.detail.MovieDetailScreenCinematic
+import com.example.movies.ui.detail.MovieDetailScreenEditorial
 import com.example.pruebascompose.composables.MovieLisTopRatedtScreen
 import com.example.pruebascompose.composables.MovieListNowRatingScreen
 import com.example.pruebascompose.composables.MovieListScreen
@@ -51,20 +53,28 @@ fun MiAppNavegacion() {
             composable<PantallaUltimas> {
                 MovieListUpcomingScreen(
                     onMovieClick = { movie: Movie ->
-                        navController.navigate(PantallaDetalle(movie = movie))
+                        navController.navigate(PantallaDetallev2(movie = movie))
                     }
                 )
             }
             composable<PantallaTopRated> {
                 MovieLisTopRatedtScreen(
                     onMovieClick = { movie: Movie ->
-                        navController.navigate(PantallaDetalle(movie = movie))
+                        navController.navigate(PantallaDetallev3(movie = movie))
                     }
                 )
             }
             composable<PantallaDetalle>(typeMap = movieTypeMap) { backStackEntry ->
                 val detalle = backStackEntry.toRoute<PantallaDetalle>()
                 MovieDetailScreen(movie = detalle.movie, onBack = { navController.popBackStack() })
+            }
+            composable<PantallaDetallev2>(typeMap = movieTypeMap) { backStackEntry ->
+                val detalle = backStackEntry.toRoute<PantallaDetalle>()
+                MovieDetailScreenCinematic(movie = detalle.movie, onBack = { navController.popBackStack() })
+            }
+            composable<PantallaDetallev3>(typeMap = movieTypeMap) { backStackEntry ->
+                val detalle = backStackEntry.toRoute<PantallaDetalle>()
+                MovieDetailScreenEditorial(movie = detalle.movie, onBack = { navController.popBackStack() })
             }
         }
     }

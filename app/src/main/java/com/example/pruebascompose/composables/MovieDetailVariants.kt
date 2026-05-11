@@ -57,11 +57,7 @@ private fun fmtDate(date: String): String {
     return "$d $m ${p[0]}"
 }
 
-// ══════════════════════════════════════════════════════════════
-// VARIANTE B — Cinematográfico oscuro
-// Póster a casi pantalla completa; degradado a negro; acciones y
-// detalles en una hoja inferior translúcida.
-// ══════════════════════════════════════════════════════════════
+
 @Composable
 fun MovieDetailScreenCinematic(
     movie: Movie,
@@ -86,7 +82,7 @@ fun MovieDetailScreenCinematic(
                 .fillMaxHeight(0.70f),
         ) {
             AsyncImage(
-                model = posterUrl(movie.poster_path, "w780"),
+                model = movie.poster_path,
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
