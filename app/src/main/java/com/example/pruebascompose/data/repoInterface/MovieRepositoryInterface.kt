@@ -6,4 +6,7 @@ import com.example.pruebascompose.data.local.PagingResult
 interface MovieRepositoryInterface {
     suspend fun getMovies(): PagingResult
     suspend fun getMovieDetail(id: String): Movie
+    suspend fun getTopRated(): PagingResult
+    suspend fun getNowRating(): PagingResult
+    suspend fun getUpcoming(): PagingResult
 }

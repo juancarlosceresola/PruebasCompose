@@ -11,6 +11,15 @@ class MovieDataSource @Inject constructor(private val moviesApi: MoviesApi) {
     suspend fun getPeliculas(): PagingResultDto {
         return moviesApi.getPeliculas().parseResponse()
     }
+    suspend fun getTopRated(): PagingResultDto {
+        return moviesApi.getTopFilms().parseResponse()
+    }
+    suspend fun getNowPlaying(): PagingResultDto {
+        return moviesApi.getNowRating().parseResponse()
+    }
+    suspend fun getUpcoming(): PagingResultDto {
+        return moviesApi.getUpcoming().parseResponse()
+    }
 
     suspend fun getPeliculaDetalle(
         id_Pelicula: String,

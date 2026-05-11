@@ -11,7 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.movies.ui.detail.MovieDetailScreen
+import com.example.pruebascompose.composables.MovieLisTopRatedtScreen
+import com.example.pruebascompose.composables.MovieListNowRatingScreen
 import com.example.pruebascompose.composables.MovieListScreen
+import com.example.pruebascompose.composables.MovieListUpcomingScreen
 import com.example.pruebascompose.composables.MovieScreen
 import com.example.pruebascompose.data.local.Movie
 import kotlin.reflect.typeOf
@@ -39,13 +42,25 @@ fun MiAppNavegacion() {
                 )
             }
             composable<PantallaPopulares> {
-                Text("Populares")
+                MovieListNowRatingScreen(
+                    onMovieClick = { movie: Movie ->
+                        navController.navigate(PantallaDetalle(movie = movie))
+                    }
+                )
             }
             composable<PantallaUltimas> {
-                Text("Últimas")
+                MovieListUpcomingScreen(
+                    onMovieClick = { movie: Movie ->
+                        navController.navigate(PantallaDetalle(movie = movie))
+                    }
+                )
             }
             composable<PantallaTopRated> {
-                Text("Top Rated")
+                MovieLisTopRatedtScreen(
+                    onMovieClick = { movie: Movie ->
+                        navController.navigate(PantallaDetalle(movie = movie))
+                    }
+                )
             }
             composable<PantallaDetalle>(typeMap = movieTypeMap) { backStackEntry ->
                 val detalle = backStackEntry.toRoute<PantallaDetalle>()

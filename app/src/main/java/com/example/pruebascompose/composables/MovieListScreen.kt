@@ -33,3 +33,69 @@ fun MovieListScreen(
         }
     }
 }
+
+@Composable
+fun MovieLisTopRatedtScreen(
+    innerPadding: PaddingValues = PaddingValues(),
+    onMovieClick: (Movie) -> Unit
+) {
+    val viewModel: MainActivityViewModel = hiltViewModel()
+    val state by viewModel.mainState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMoviesTopRated()
+    }
+
+    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+        LazyColumn {
+            items(state.movies.size) { index ->
+                val movie = state.movies[index]
+                MovieItemOverlay(movie = movie, onCLick = { onMovieClick(movie) })
+            }
+        }
+    }
+}
+
+@Composable
+fun MovieListUpcomingScreen(
+    innerPadding: PaddingValues = PaddingValues(),
+    onMovieClick: (Movie) -> Unit
+) {
+    val viewModel: MainActivityViewModel = hiltViewModel()
+    val state by viewModel.mainState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMoviesUpcoming()
+    }
+
+    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+        LazyColumn {
+            items(state.movies.size) { index ->
+                val movie = state.movies[index]
+                MovieItemOverlay(movie = movie, onCLick = { onMovieClick(movie) })
+            }
+        }
+    }
+}
+
+@Composable
+fun MovieListNowRatingScreen(
+    innerPadding: PaddingValues = PaddingValues(),
+    onMovieClick: (Movie) -> Unit
+) {
+    val viewModel: MainActivityViewModel = hiltViewModel()
+    val state by viewModel.mainState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMoviesNowRating()
+    }
+
+    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+        LazyColumn {
+            items(state.movies.size) { index ->
+                val movie = state.movies[index]
+                MovieItemOverlay(movie = movie, onCLick = { onMovieClick(movie) })
+            }
+        }
+    }
+}

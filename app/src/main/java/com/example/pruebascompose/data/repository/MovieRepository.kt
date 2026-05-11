@@ -17,4 +17,16 @@ class MovieRepository(
     override suspend fun getMovieDetail(id: String): Movie {
       return movieDataSource.getPeliculaDetalle(id,"Es").toMovie()
     }
+
+    override suspend fun getTopRated(): PagingResult {
+        return movieDataSource.getTopRated().toPagingResult()
+    }
+
+    override suspend fun getNowRating(): PagingResult {
+        return movieDataSource.getNowPlaying().toPagingResult()
+    }
+
+    override suspend fun getUpcoming(): PagingResult {
+        return movieDataSource.getUpcoming().toPagingResult()
+    }
 }
