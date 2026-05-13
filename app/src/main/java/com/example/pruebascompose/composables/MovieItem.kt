@@ -28,18 +28,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.pruebascompose.data.local.Movie
+import com.example.pruebascompose.domain.model.MovieBO
 
 
 @Composable
 fun MovieItemEditorial(
-    movie: Movie,
+    movie: MovieBO,
     modifier: Modifier = Modifier,
     onCLick: (String) -> Unit
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         AsyncImage(
-            model = movie.poster_path,
+            model = movie.posterPath,
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -67,11 +67,11 @@ fun MovieItemEditorial(
                 modifier = Modifier.weight(1f),
             )
             Spacer(Modifier.width(12.dp))
-            RatingLabel(movie.vote_average.toFloat())
+            RatingLabel(movie.voteAverage.toFloat())
         }
         Spacer(Modifier.height(6.dp))
         Text(
-            text = movie.release_date,
+            text = movie.releaseDate,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -87,7 +87,7 @@ fun MovieItemEditorial(
 
 @Composable
 fun MovieItemRow(
-    movie: Movie,
+    movie: MovieBO,
     modifier: Modifier = Modifier,
     onCLick: (String) -> Unit
 ) {
@@ -98,7 +98,7 @@ fun MovieItemRow(
         horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         AsyncImage(
-            model = movie.poster_path,
+            model = movie.posterPath,
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -118,7 +118,7 @@ fun MovieItemRow(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = movie.release_date,
+                text = movie.releaseDate,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -131,7 +131,7 @@ fun MovieItemRow(
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(Modifier.height(8.dp))
-            RatingLabel(movie.vote_average.toFloat())
+            RatingLabel(movie.voteAverage.toFloat())
         }
     }
 }
@@ -139,9 +139,9 @@ fun MovieItemRow(
 
 @Composable
 fun MovieItemOverlay(
-    movie: Movie,
+    movie: MovieBO,
     modifier: Modifier = Modifier,
-    onCLick: (String) -> Unit
+    onCLick: (MovieBO) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -152,14 +152,13 @@ fun MovieItemOverlay(
             .background(Color.Black),
     ) {
         AsyncImage(
-            model = movie.poster_path,
+            model = movie.posterPath,
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .clickable { onCLick(movie.title) },
+                .clickable { onCLick(movie) },
         )
-        // Degradado para legibilidad del texto
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -177,7 +176,7 @@ fun MovieItemOverlay(
                 .padding(18.dp),
         ) {
             Text(
-                text = movie.release_date,
+                text = movie.releaseDate,
                 style = MaterialTheme.typography.labelSmall,
                 color = Color.White.copy(alpha = 0.85f),
             )
@@ -206,10 +205,7 @@ fun MovieItemOverlay(
 @Composable
 private fun MovieItemEditorialPreview() {
     com.example.pruebascompose.ui.theme.PruebasComposeTheme {
-        MovieItemEditorial(
-            movie = previewMovie(),
-            onCLick = {}
-        )
+        MovieItemEditorial(movie = previewMovie(), onCLick = {})
     }
 }
 
@@ -217,10 +213,7 @@ private fun MovieItemEditorialPreview() {
 @Composable
 private fun MovieItemRowPreview() {
     com.example.pruebascompose.ui.theme.PruebasComposeTheme {
-        MovieItemRow(
-            movie = previewMovie(),
-            onCLick = {}
-        )
+        MovieItemRow(movie = previewMovie(), onCLick = {})
     }
 }
 
@@ -228,27 +221,24 @@ private fun MovieItemRowPreview() {
 @Composable
 private fun MovieItemOverlayPreview() {
     com.example.pruebascompose.ui.theme.PruebasComposeTheme {
-        MovieItemOverlay(
-            movie = previewMovie(),
-            onCLick = {}
-        )
+        MovieItemOverlay(movie = previewMovie(), onCLick = {})
     }
 }
 
-private fun previewMovie() = Movie(
+private fun previewMovie() = MovieBO(
     adult = false,
-    backdrop_path = "",
+    backdropPath = "",
     id = 1,
-    original_language = "en",
-    original_title = "Super Mario Bros",
+    originalLanguage = "en",
+    originalTitle = "Super Mario Bros",
     overview = "Mario y Luigi emprenden una aventura épica para salvar el Reino Champiñón.",
     popularity = 9.5,
-    poster_path = "android.resource://com.example.pruebascompose/drawable/mario",
-    release_date = "2023-04-05",
+    posterPath = "android.resource://com.example.pruebascompose/drawable/mario",
+    releaseDate = "2023-04-05",
     title = "Super Mario Bros",
     video = false,
-    vote_average = 7.5,
-    vote_count = 8420
+    voteAverage = 7.5,
+    voteCount = 8420
 )
 
 @Composable
@@ -259,5 +249,3 @@ private fun RatingLabel(rating: Float) {
         color = MaterialTheme.colorScheme.onSurface,
     )
 }
-
-

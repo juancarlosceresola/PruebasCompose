@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.pruebascompose.data.local.Movie
+import com.example.pruebascompose.domain.model.MovieBO
 
 @Composable
-fun MovieScreen(movie: Movie, onCLick: (String) -> Unit ) {
+fun MovieScreen(movie: MovieBO, onCLick: (String) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -27,12 +27,10 @@ fun MovieScreen(movie: Movie, onCLick: (String) -> Unit ) {
                 .width(150.dp)
                 .height(200.dp)
                 .padding(20.dp)
-                .clickable {
-                    onCLick(movie.title)
-                },
+                .clickable { onCLick(movie.title) },
             alignment = Alignment.Center,
             model = ImageRequest.Builder(LocalContext.current)
-                .data(movie.poster_path)
+                .data(movie.posterPath)
                 .crossfade(true)
                 .build(),
             contentDescription = "Live image picture",

@@ -1,6 +1,5 @@
 package com.example.pruebascompose
 
-import androidx.lifecycle.ViewModel
 import com.example.pruebascompose.core.BaseViewModel
 import com.example.pruebascompose.domain.useCase.GetMoviesListUseCase
 import com.example.pruebascompose.domain.useCase.GetMoviesNowPlayingListUseCase
@@ -13,61 +12,53 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val  getMoviesListUseCase: GetMoviesListUseCase,
-    private  val getMoviesUpcomingListUseCase: GetMoviesUpcomingListUseCase,
-    private  val getMoviesTopRatedUseCase: GetMoviesTopRatedUseCase,
-    private  val getMoviesNowPlayingListUseCase: GetMoviesNowPlayingListUseCase
-): BaseViewModel() {
+    private val getMoviesListUseCase: GetMoviesListUseCase,
+    private val getMoviesUpcomingListUseCase: GetMoviesUpcomingListUseCase,
+    private val getMoviesTopRatedUseCase: GetMoviesTopRatedUseCase,
+    private val getMoviesNowPlayingListUseCase: GetMoviesNowPlayingListUseCase
+) : BaseViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState: StateFlow<MainState> = _mainState
 
-    fun getMovies(){
+    fun getMovies() {
         executeUseCase(
             action = {
-                val movie = getMoviesListUseCase.execute(Unit).results
-                _mainState.value = _mainState.value.copy(
-                    movies = movie
-                )
+                val movies = getMoviesListUseCase.execute(Unit).movies
+                _mainState.value = _mainState.value.copy(movies = movies)
             },
             exceptionHandler = {},
             finallyHandler = {}
         )
     }
 
-    fun getMoviesTopRated(){
+    fun getMoviesTopRated() {
         executeUseCase(
             action = {
-                val movie = getMoviesTopRatedUseCase.execute(Unit).results
-                _mainState.value = _mainState.value.copy(
-                    movies = movie
-                )
+                val movies = getMoviesTopRatedUseCase.execute(Unit).movies
+                _mainState.value = _mainState.value.copy(movies = movies)
             },
             exceptionHandler = {},
             finallyHandler = {}
         )
     }
 
-    fun getMoviesUpcoming(){
+    fun getMoviesUpcoming() {
         executeUseCase(
             action = {
-                val movie = getMoviesUpcomingListUseCase.execute(Unit).results
-                _mainState.value = _mainState.value.copy(
-                    movies = movie
-                )
+                val movies = getMoviesUpcomingListUseCase.execute(Unit).movies
+                _mainState.value = _mainState.value.copy(movies = movies)
             },
             exceptionHandler = {},
             finallyHandler = {}
         )
     }
 
-    fun getMoviesNowRating(){
+    fun getMoviesNowRating() {
         executeUseCase(
             action = {
-                val movie = getMoviesNowPlayingListUseCase.execute(Unit).results
-                _mainState.value = _mainState.value.copy(
-                    movies = movie
-                )
+                val movies = getMoviesNowPlayingListUseCase.execute(Unit).movies
+                _mainState.value = _mainState.value.copy(movies = movies)
             },
             exceptionHandler = {},
             finallyHandler = {}

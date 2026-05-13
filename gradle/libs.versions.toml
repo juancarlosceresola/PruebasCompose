@@ -19,6 +19,7 @@ hiltNavigationCompose = "1.2.0"
 timber = "5.0.1"
 navigation ="2.8.9"
 kotlinx-serialization-json = "1.7.3"
+kotlinx-coroutines = "1.9.0"
 
 [libraries]
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -45,6 +46,8 @@ moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "
 retrofit-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 navigation-android = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 
 
 #HILT
@@ -63,4 +66,6 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 

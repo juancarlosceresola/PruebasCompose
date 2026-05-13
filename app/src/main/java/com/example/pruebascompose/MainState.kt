@@ -1,7 +1,7 @@
 package com.example.pruebascompose
 
-import com.example.pruebascompose.data.local.Movie
+import com.example.pruebascompose.domain.model.MovieBO
 
-data class MainState (
-    val movies: List<Movie> = listOf()
+data class MainState(
+    val movies: List<MovieBO> = listOf()
 )

@@ -12,31 +12,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.pruebascompose.data.local.Movie
-import com.example.pruebascompose.domain.bo.BasicMovieBO
-import com.example.pruebascompose.domain.bo.MovieBO
+import com.example.pruebascompose.domain.model.MovieBO
 
 @Composable
-fun Movie(movie: Movie,){
+fun Movie(movie: MovieBO) {
     Row {
-    AsyncImage(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .width(150.dp)
-            .height(200.dp)
-            .clickable {
-
-            },
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(movie.poster_path)
-            .crossfade(false)
-            .build(),
-        contentDescription = "Live image picture",
-        contentScale = ContentScale.FillBounds
-
-    )}
+        AsyncImage(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .width(150.dp)
+                .height(200.dp)
+                .clickable { },
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(movie.posterPath)
+                .crossfade(false)
+                .build(),
+            contentDescription = "Live image picture",
+            contentScale = ContentScale.FillBounds
+        )
+    }
 }

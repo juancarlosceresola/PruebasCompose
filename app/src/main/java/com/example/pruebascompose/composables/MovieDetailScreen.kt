@@ -17,7 +17,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -30,17 +29,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.pruebascompose.data.local.Movie
+import com.example.pruebascompose.domain.model.MovieBO
 import java.util.Locale
 
 
-
-
-// TMDB sirve rutas relativas: combínalas con el base url al renderizar.
 private const val TMDB_IMG = "https://image.tmdb.org/t/p"
 private fun posterUrl(path: String, size: String = "w500") = "$TMDB_IMG/$size$path"
 private fun backdropUrl(path: String, size: String = "w780") = "$TMDB_IMG/$size$path"
-
 
 private fun fmtYear(date: String) = date.take(4)
 private fun fmtCount(n: Int): String =
@@ -63,7 +58,7 @@ private fun fmtDate(date: String): String {
 
 @Composable
 fun MovieDetailScreen(
-    movie: Movie,
+    movie: MovieBO,
     onBack: () -> Unit = {},
     onPlayTrailer: () -> Unit = {},
     onAddToList: () -> Unit = {},
@@ -95,7 +90,6 @@ fun MovieDetailScreen(
             Spacer(Modifier.height(32.dp))
         }
 
-        // Top bar flotante (sobre el backdrop)
         TopActions(
             onBack = { onBack() },
             modifier = Modifier
@@ -107,16 +101,15 @@ fun MovieDetailScreen(
 
 
 @Composable
-private fun BackdropWithPoster(movie: Movie) {
+private fun BackdropWithPoster(movie: MovieBO) {
     Box {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 10f),
         ) {
             AsyncImage(
-                model = backdropUrl(movie.backdrop_path),
+                model = backdropUrl(movie.backdropPath),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -140,7 +133,6 @@ private fun BackdropWithPoster(movie: Movie) {
             )
         }
 
-        // Póster + cabecera
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -150,7 +142,7 @@ private fun BackdropWithPoster(movie: Movie) {
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             AsyncImage(
-                model = movie.poster_path,
+                model = movie.posterPath,
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -165,7 +157,7 @@ private fun BackdropWithPoster(movie: Movie) {
                     .padding(bottom = 6.dp),
             ) {
                 Text(
-                    text = "${fmtYear(movie.release_date)} · ${langLabel(movie.original_language)} · ${ageLabel(movie.adult)}",
+                    text = "${fmtYear(movie.releaseDate)} · ${langLabel(movie.originalLanguage)} · ${ageLabel(movie.adult)}",
                     color = Color.White.copy(alpha = 0.9f),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -180,9 +172,9 @@ private fun BackdropWithPoster(movie: Movie) {
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (movie.original_title != movie.title) {
+                if (movie.originalTitle != movie.title) {
                     Text(
-                        text = movie.original_title,
+                        text = movie.originalTitle,
                         color = Color.White.copy(alpha = 0.7f),
                         fontSize = 12.sp,
                         fontStyle = FontStyle.Italic,
@@ -190,8 +182,6 @@ private fun BackdropWithPoster(movie: Movie) {
                 }
             }
         }
-        // Compensa el offset negativo del Row para que el siguiente bloque siga normal
-        Spacer(modifier = Modifier.height(0.dp))
     }
 }
 
@@ -203,7 +193,7 @@ private fun TopActions(onBack: () -> Unit, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconCircleButton(onClick = {onBack()}) {
+        IconCircleButton(onClick = { onBack() }) {
             Icon(Icons.Filled.ArrowBack, contentDescription = "Volver", tint = Color.White)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -220,15 +210,14 @@ private fun IconCircleButton(onClick: () -> Unit, content: @Composable () -> Uni
             .size(38.dp)
             .clip(CircleShape)
             .background(Color.Black.copy(alpha = 0.4f))
-            .clickable(onClick = {onClick()}),
+            .clickable(onClick = { onClick() }),
         contentAlignment = Alignment.Center,
-
     ) { content() }
 }
 
 
 @Composable
-private fun RatingRow(movie: Movie) {
+private fun RatingRow(movie: MovieBO) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -243,12 +232,12 @@ private fun RatingRow(movie: Movie) {
             Spacer(Modifier.width(6.dp))
             Column {
                 Text(
-                    text = "%.1f".format(movie.vote_average),
+                    text = "%.1f".format(movie.voteAverage),
                     fontWeight = FontWeight.Bold, fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
-                    text = "${fmtCount(movie.vote_count)} votos",
+                    text = "${fmtCount(movie.voteCount)} votos",
                     fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -280,9 +269,7 @@ private fun ActionButtons(onPlayTrailer: () -> Unit, onAddToList: () -> Unit) {
     ) {
         Button(
             onClick = onPlayTrailer,
-            modifier = Modifier
-                .weight(1f)
-                .height(48.dp),
+            modifier = Modifier.weight(1f).height(48.dp),
             shape = RoundedCornerShape(12.dp),
         ) {
             Icon(Icons.Filled.PlayArrow, contentDescription = null)
@@ -312,10 +299,10 @@ private fun SectionHeader(text: String) {
 }
 
 @Composable
-private fun DetailsGrid(movie: Movie) {
+private fun DetailsGrid(movie: MovieBO) {
     val cells = listOf(
-        "Estreno" to fmtDate(movie.release_date),
-        "Idioma original" to langLabel(movie.original_language),
+        "Estreno" to fmtDate(movie.releaseDate),
+        "Idioma original" to langLabel(movie.originalLanguage),
         "Clasificación" to ageLabel(movie.adult),
         "TMDB ID" to "#${movie.id}",
     )
@@ -358,18 +345,18 @@ private fun DetailCell(label: String, value: String, modifier: Modifier = Modifi
 }
 
 
-val SampleMovie = Movie(
+val SampleMovie = MovieBO(
     adult = false,
-    backdrop_path = "/abc123.jpg",
+    backdropPath = "/abc123.jpg",
     id = 1241982,
-    original_language = "en",
-    original_title = "The Super Mario Galaxy Movie",
+    originalLanguage = "en",
+    originalTitle = "The Super Mario Galaxy Movie",
     overview = "Mario y sus amigos cruzan galaxias para detener a Bowser y devolver la corona perdida de la Princesa Peach.",
     popularity = 1284.572,
-    poster_path = "/xyz789.jpg",
-    release_date = "2026-04-03",
+    posterPath = "/xyz789.jpg",
+    releaseDate = "2026-04-03",
     title = "The Super Mario Galaxy Movie",
     video = false,
-    vote_average = 8.4,
-    vote_count = 3127,
+    voteAverage = 8.4,
+    voteCount = 3127,
 )

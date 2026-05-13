@@ -8,23 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pruebascompose.MainActivityViewModel
-import com.example.pruebascompose.data.local.Movie
+import com.example.pruebascompose.domain.model.MovieBO
 
 @Composable
 fun MovieListScreen(
     innerPadding: PaddingValues = PaddingValues(),
-    onMovieClick: (Movie) -> Unit
+    onMovieClick: (MovieBO) -> Unit
 ) {
     val viewModel: MainActivityViewModel = hiltViewModel()
     val state by viewModel.mainState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.getMovies()
-    }
+    LaunchedEffect(Unit) { viewModel.getMovies() }
 
-    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+    Column(modifier = Modifier.padding(innerPadding)) {
         LazyColumn {
             items(state.movies.size) { index ->
                 val movie = state.movies[index]
@@ -37,16 +36,14 @@ fun MovieListScreen(
 @Composable
 fun MovieLisTopRatedtScreen(
     innerPadding: PaddingValues = PaddingValues(),
-    onMovieClick: (Movie) -> Unit
+    onMovieClick: (MovieBO) -> Unit
 ) {
     val viewModel: MainActivityViewModel = hiltViewModel()
     val state by viewModel.mainState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.getMoviesTopRated()
-    }
+    LaunchedEffect(Unit) { viewModel.getMoviesTopRated() }
 
-    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+    Column(modifier = Modifier.padding(innerPadding)) {
         LazyColumn {
             items(state.movies.size) { index ->
                 val movie = state.movies[index]
@@ -59,16 +56,14 @@ fun MovieLisTopRatedtScreen(
 @Composable
 fun MovieListUpcomingScreen(
     innerPadding: PaddingValues = PaddingValues(),
-    onMovieClick: (Movie) -> Unit
+    onMovieClick: (MovieBO) -> Unit
 ) {
     val viewModel: MainActivityViewModel = hiltViewModel()
     val state by viewModel.mainState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.getMoviesUpcoming()
-    }
+    LaunchedEffect(Unit) { viewModel.getMoviesUpcoming() }
 
-    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+    Column(modifier = Modifier.padding(innerPadding)) {
         LazyColumn {
             items(state.movies.size) { index ->
                 val movie = state.movies[index]
@@ -81,16 +76,14 @@ fun MovieListUpcomingScreen(
 @Composable
 fun MovieListNowRatingScreen(
     innerPadding: PaddingValues = PaddingValues(),
-    onMovieClick: (Movie) -> Unit
+    onMovieClick: (MovieBO) -> Unit
 ) {
     val viewModel: MainActivityViewModel = hiltViewModel()
     val state by viewModel.mainState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.getMoviesNowRating()
-    }
+    LaunchedEffect(Unit) { viewModel.getMoviesNowRating() }
 
-    Column(modifier = androidx.compose.ui.Modifier.padding(innerPadding)) {
+    Column(modifier = Modifier.padding(innerPadding)) {
         LazyColumn {
             items(state.movies.size) { index ->
                 val movie = state.movies[index]
