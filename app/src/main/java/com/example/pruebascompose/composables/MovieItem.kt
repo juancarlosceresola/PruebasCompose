@@ -23,12 +23,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.pruebascompose.R
 import com.example.pruebascompose.domain.model.MovieBO
+import com.example.pruebascompose.ui.theme.Dimens
+import com.example.pruebascompose.ui.theme.OverlayBlack92
+import com.example.pruebascompose.ui.theme.OverlayBlack55
+import com.example.pruebascompose.ui.theme.OverlayWhite85
 
 
 @Composable
@@ -45,11 +49,11 @@ fun MovieItemEditorial(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(2f / 3f)
-                .clip(RoundedCornerShape(14.dp))
+                .clip(RoundedCornerShape(Dimens.CornerCard))
                 .background(Color.Black)
                 .clickable { onCLick(movie.title) },
         )
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(Dimens.SpacingMediumLarge))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Top,
@@ -59,26 +63,26 @@ fun MovieItemEditorial(
                 text = movie.title,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
-                    lineHeight = 24.sp,
+                    lineHeight = Dimens.LineHeightTitle,
                 ),
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f),
             )
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(Dimens.SpacingMedium))
             RatingLabel(movie.voteAverage.toFloat())
         }
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(Dimens.SpacingXSmall))
         Text(
             text = movie.releaseDate,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(Dimens.SpacingSmall))
         Text(
             text = movie.overview,
-            style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+            style = MaterialTheme.typography.bodyMedium.copy(lineHeight = Dimens.LineHeightBodyMed),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
@@ -94,17 +98,17 @@ fun MovieItemRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
+            .padding(vertical = Dimens.SpacingMediumLarge),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingMediumLarge),
     ) {
         AsyncImage(
             model = movie.posterPath,
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .width(84.dp)
+                .width(Dimens.PosterThumbnailWidth)
                 .aspectRatio(2f / 3f)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(Dimens.CornerSmall))
                 .background(Color.Black)
                 .clickable { onCLick(movie.title) },
         )
@@ -116,21 +120,21 @@ fun MovieItemRow(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(Dimens.SpacingXXSmall))
             Text(
                 text = movie.releaseDate,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Dimens.SpacingSmall))
             Text(
                 text = movie.overview,
-                style = MaterialTheme.typography.bodySmall.copy(lineHeight = 18.sp),
+                style = MaterialTheme.typography.bodySmall.copy(lineHeight = Dimens.LineHeightBody),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Dimens.SpacingSmall))
             RatingLabel(movie.voteAverage.toFloat())
         }
     }
@@ -146,9 +150,9 @@ fun MovieItemOverlay(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+            .padding(start = Dimens.SpacingXXLarge, end = Dimens.SpacingXXLarge, bottom = Dimens.SpacingXXLarge)
             .aspectRatio(2f / 3f)
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(Dimens.CornerOverlay))
             .background(Color.Black),
     ) {
         AsyncImage(
@@ -165,34 +169,34 @@ fun MovieItemOverlay(
                 .background(
                     Brush.verticalGradient(
                         0.40f to Color.Transparent,
-                        0.70f to Color.Black.copy(alpha = 0.55f),
-                        1.00f to Color.Black.copy(alpha = 0.92f),
+                        0.70f to OverlayBlack55,
+                        1.00f to OverlayBlack92,
                     ),
                 ),
         )
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(18.dp),
+                .padding(Dimens.SpacingXLarge),
         ) {
             Text(
                 text = movie.releaseDate,
                 style = MaterialTheme.typography.labelSmall,
-                color = Color.White.copy(alpha = 0.85f),
+                color = OverlayWhite85,
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(Dimens.SpacingXSmall))
             Text(
                 text = movie.title,
                 color = Color.White,
                 fontWeight = FontWeight.ExtraBold,
-                fontSize = 22.sp,
-                lineHeight = 24.sp,
+                fontSize = Dimens.TextOverlayTitle,
+                lineHeight = Dimens.LineHeightNormal,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(Dimens.SpacingSmall))
             Text(
                 text = movie.overview,
-                color = Color.White.copy(alpha = 0.85f),
-                style = MaterialTheme.typography.bodySmall.copy(lineHeight = 18.sp),
+                color = OverlayWhite85,
+                style = MaterialTheme.typography.bodySmall.copy(lineHeight = Dimens.LineHeightBody),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -226,25 +230,17 @@ private fun MovieItemOverlayPreview() {
 }
 
 private fun previewMovie() = MovieBO(
-    adult = false,
-    backdropPath = "",
-    id = 1,
-    originalLanguage = "en",
+    adult = false, backdropPath = "", id = 1, originalLanguage = "en",
     originalTitle = "Super Mario Bros",
     overview = "Mario y Luigi emprenden una aventura épica para salvar el Reino Champiñón.",
-    popularity = 9.5,
-    posterPath = "android.resource://com.example.pruebascompose/drawable/mario",
-    releaseDate = "2023-04-05",
-    title = "Super Mario Bros",
-    video = false,
-    voteAverage = 7.5,
-    voteCount = 8420
+    popularity = 9.5, posterPath = "", releaseDate = "2023-04-05",
+    title = "Super Mario Bros", video = false, voteAverage = 7.5, voteCount = 8420
 )
 
 @Composable
 private fun RatingLabel(rating: Float) {
     Text(
-        text = "★ ${"%.1f".format(rating)}",
+        text = stringResource(R.string.rating_format, rating),
         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
         color = MaterialTheme.colorScheme.onSurface,
     )

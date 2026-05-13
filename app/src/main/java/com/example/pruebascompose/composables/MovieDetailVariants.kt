@@ -1,5 +1,6 @@
 package com.example.movies.ui.detail
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -22,14 +23,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.pruebascompose.R
 import com.example.pruebascompose.domain.model.MovieBO
+import com.example.pruebascompose.ui.theme.CinemaBackground
+import com.example.pruebascompose.ui.theme.Dimens
+import com.example.pruebascompose.ui.theme.EditorialAccent
+import com.example.pruebascompose.ui.theme.OverlayBlack55
+import com.example.pruebascompose.ui.theme.OverlayWhite08
+import com.example.pruebascompose.ui.theme.OverlayWhite10
+import com.example.pruebascompose.ui.theme.OverlayWhite12
+import com.example.pruebascompose.ui.theme.OverlayWhite18
+import com.example.pruebascompose.ui.theme.OverlayWhite22
+import com.example.pruebascompose.ui.theme.OverlayWhite40
+import com.example.pruebascompose.ui.theme.OverlayWhite55
+import com.example.pruebascompose.ui.theme.OverlayWhite60
+import com.example.pruebascompose.ui.theme.OverlayWhite78
+import com.example.pruebascompose.ui.theme.OverlayWhite82
+import com.example.pruebascompose.ui.theme.OverlayWhite90
+import com.example.pruebascompose.ui.theme.StarYellow
 import java.util.Locale
 
 private const val TMDB_IMG_V = "https://image.tmdb.org/t/p"
@@ -40,18 +58,28 @@ private fun fmtYearV(date: String) = date.take(4)
 private fun fmtCountV(n: Int): String =
     if (n >= 1000) "%.1f".format(n / 1000.0).removeSuffix(".0") + "k" else n.toString()
 private fun fmtPopularityV(p: Double) = "%,d".format(p.toInt())
-private fun langLabelV(code: String) = when (code) {
-    "en" -> "Inglés"; "es" -> "Español"; "fr" -> "Francés"
-    "ja" -> "Japonés"; "ko" -> "Coreano"; else -> code.uppercase(Locale.ROOT)
-}
-private fun ageLabelV(adult: Boolean) = if (adult) "+18" else "TP"
-private fun fmtDateV(date: String): String {
-    val p = date.split("-"); if (p.size != 3) return date
-    val months = listOf("ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic")
+private fun fmtDateV(date: String, months: Array<String>): String {
+    val p = date.split("-")
+    if (p.size != 3) return date
     val d = p[2].toIntOrNull() ?: return date
     val m = p[1].toIntOrNull()?.minus(1)?.let { months.getOrNull(it) } ?: return date
     return "$d $m ${p[0]}"
 }
+
+@Composable
+private fun langLabelV(code: String): String = when (code) {
+    "en" -> stringResource(R.string.lang_english)
+    "es" -> stringResource(R.string.lang_spanish)
+    "fr" -> stringResource(R.string.lang_french)
+    "ja" -> stringResource(R.string.lang_japanese)
+    "ko" -> stringResource(R.string.lang_korean)
+    else -> code.uppercase(Locale.ROOT)
+}
+
+@Composable
+private fun ageLabelV(adult: Boolean): String =
+    if (adult) stringResource(R.string.classification_adults_short)
+    else stringResource(R.string.classification_all_short)
 
 
 @Composable
@@ -64,12 +92,12 @@ fun MovieDetailScreenCinematic(
     modifier: Modifier = Modifier,
 ) {
     val scroll = rememberScrollState()
-    val bgDark = Color(0xFF0E0B14)
+    val months = stringArrayResource(R.array.months_short)
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(bgDark),
+            .background(CinemaBackground),
     ) {
         Box(
             modifier = Modifier
@@ -87,104 +115,104 @@ fun MovieDetailScreenCinematic(
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
-                            0.00f to bgDark.copy(alpha = 0.55f),
+                            0.00f to CinemaBackground.copy(alpha = 0.55f),
                             0.18f to Color.Transparent,
                             0.38f to Color.Transparent,
-                            0.62f to bgDark.copy(alpha = 0.85f),
-                            0.78f to bgDark,
+                            0.62f to CinemaBackground.copy(alpha = 0.85f),
+                            0.78f to CinemaBackground,
                         ),
                     ),
             )
         }
 
         Column(modifier = Modifier.fillMaxSize().verticalScroll(scroll)) {
-            Spacer(modifier = Modifier.height(360.dp))
+            Spacer(modifier = Modifier.height(Dimens.CinematicHeroSpacer))
 
-            Column(modifier = Modifier.padding(start = 22.dp, end = 22.dp, bottom = 32.dp)) {
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Column(modifier = Modifier.padding(start = Dimens.SpacingSection, end = Dimens.SpacingSection, bottom = Dimens.SpacingBottom)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingXSmall)) {
                     DarkChip(fmtYearV(movie.releaseDate))
                     DarkChip(langLabelV(movie.originalLanguage))
                     DarkChip(ageLabelV(movie.adult))
-                    DarkChip("HD")
+                    DarkChip(stringResource(R.string.label_hd))
                 }
 
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(Dimens.SpacingMediumLarge))
                 Text(
                     text = movie.title,
                     color = Color.White,
-                    fontSize = 30.sp,
+                    fontSize = Dimens.TextSectionTitle,
                     fontWeight = FontWeight.Black,
-                    lineHeight = 32.sp,
+                    lineHeight = Dimens.LineHeightLarge,
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(Dimens.SpacingMedium))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.Star, null, tint = Color(0xFFF5A524), modifier = Modifier.size(14.dp))
+                    Icon(Icons.Filled.Star, null, tint = StarYellow, modifier = Modifier.size(Dimens.SpacingMediumLarge))
                     Spacer(Modifier.width(5.dp))
-                    Text("%.1f".format(movie.voteAverage), color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                    Text(" / 10", color = Color.White.copy(alpha = 0.6f), fontSize = 12.sp)
+                    Text("%.1f".format(movie.voteAverage), color = Color.White, fontSize = Dimens.TextMediumSmall, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.score_out_of_10), color = OverlayWhite60, fontSize = Dimens.TextMediumSmall)
                     DotSep()
-                    Text("${fmtCountV(movie.voteCount)} votos", color = Color.White.copy(alpha = 0.78f), fontSize = 12.sp)
+                    Text(stringResource(R.string.votes_format, fmtCountV(movie.voteCount)), color = OverlayWhite78, fontSize = Dimens.TextMediumSmall)
                     DotSep()
-                    Text("↗ ${fmtPopularityV(movie.popularity)}", color = Color.White.copy(alpha = 0.78f), fontSize = 12.sp)
+                    Text(stringResource(R.string.popularity_format, fmtPopularityV(movie.popularity)), color = OverlayWhite78, fontSize = Dimens.TextMediumSmall)
                 }
 
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(Dimens.SpacingXLarge))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(
                         onClick = onPlay,
-                        modifier = Modifier.weight(1f).height(48.dp),
-                        shape = RoundedCornerShape(999.dp),
+                        modifier = Modifier.weight(1f).height(Dimens.ButtonHeight),
+                        shape = RoundedCornerShape(Dimens.CornerPill),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color.Black),
                     ) {
                         Icon(Icons.Filled.PlayArrow, null)
-                        Spacer(Modifier.width(6.dp))
-                        Text("Reproducir", fontWeight = FontWeight.ExtraBold)
+                        Spacer(Modifier.width(Dimens.SpacingXSmall))
+                        Text(stringResource(R.string.action_play), fontWeight = FontWeight.ExtraBold)
                     }
                     GlassCircleButton(onClick = onAddToList) {
-                        Icon(Icons.Filled.Add, contentDescription = "Mi lista", tint = Color.White)
+                        Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.action_add_to_list), tint = Color.White)
                     }
                     GlassCircleButton(onClick = onShare) {
-                        Icon(Icons.Filled.Share, contentDescription = "Compartir", tint = Color.White)
+                        Icon(Icons.Filled.Share, contentDescription = stringResource(R.string.action_share), tint = Color.White)
                     }
                 }
 
-                Spacer(Modifier.height(22.dp))
-                Text(text = movie.overview, color = Color.White.copy(alpha = 0.82f), fontSize = 14.sp, lineHeight = 21.sp)
+                Spacer(Modifier.height(Dimens.SpacingSection))
+                Text(text = movie.overview, color = OverlayWhite82, fontSize = Dimens.TextBody, lineHeight = Dimens.LineHeightMedium)
 
-                Spacer(Modifier.height(22.dp))
+                Spacer(Modifier.height(Dimens.SpacingSection))
                 val rows = listOf(
-                    "Título original" to movie.originalTitle,
-                    "Fecha de estreno" to fmtDateV(movie.releaseDate),
-                    "Idioma original" to langLabelV(movie.originalLanguage),
-                    "Clasificación" to if (movie.adult) "Solo adultos (+18)" else "Todo público",
-                    "Puntuación" to "%.1f / 10 — ${fmtCountV(movie.voteCount)} votos".format(movie.voteAverage),
-                    "Popularidad" to fmtPopularityV(movie.popularity),
+                    stringResource(R.string.label_original_title) to movie.originalTitle,
+                    stringResource(R.string.label_premiere_date) to fmtDateV(movie.releaseDate, months),
+                    stringResource(R.string.label_original_language) to langLabelV(movie.originalLanguage),
+                    stringResource(R.string.label_classification) to if (movie.adult) stringResource(R.string.classification_adults_long) else stringResource(R.string.classification_all),
+                    stringResource(R.string.label_score) to "${"%.1f".format(movie.voteAverage)}${stringResource(R.string.score_out_of_10)} — ${stringResource(R.string.votes_format, fmtCountV(movie.voteCount))}",
+                    stringResource(R.string.label_popularity_stat) to fmtPopularityV(movie.popularity),
                 )
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Divider(color = Color.White.copy(alpha = 0.10f))
+                    HorizontalDivider(color = OverlayWhite10)
                     rows.forEach { (k, v) ->
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                            modifier = Modifier.fillMaxWidth().padding(vertical = Dimens.SpacingMedium),
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
-                            Text(k, color = Color.White.copy(alpha = 0.55f), fontSize = 13.sp)
-                            Text(v, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 14.dp))
+                            Text(k, color = OverlayWhite55, fontSize = Dimens.TextMedium)
+                            Text(v, color = Color.White, fontSize = Dimens.TextMedium, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = Dimens.SpacingMediumLarge))
                         }
-                        Divider(color = Color.White.copy(alpha = 0.08f))
+                        HorizontalDivider(color = OverlayWhite08)
                     }
                 }
             }
         }
 
         Row(
-            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().padding(8.dp),
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth().padding(Dimens.SpacingSmall),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            GlassCircleButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, "Volver", tint = Color.White) }
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                GlassCircleButton(onClick = {}) { Icon(Icons.Filled.FavoriteBorder, "Favorito", tint = Color.White) }
-                GlassCircleButton(onClick = onShare) { Icon(Icons.Filled.Share, "Compartir", tint = Color.White) }
+            GlassCircleButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, stringResource(R.string.action_back), tint = Color.White) }
+            Row(horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingXSmall)) {
+                GlassCircleButton(onClick = {}) { Icon(Icons.Filled.FavoriteBorder, stringResource(R.string.action_favorite), tint = Color.White) }
+                GlassCircleButton(onClick = onShare) { Icon(Icons.Filled.Share, stringResource(R.string.action_share), tint = Color.White) }
             }
         }
     }
@@ -194,12 +222,12 @@ fun MovieDetailScreenCinematic(
 private fun DarkChip(text: String) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(999.dp))
-            .background(Color.White.copy(alpha = 0.12f))
-            .border(1.dp, Color.White.copy(alpha = 0.18f), RoundedCornerShape(999.dp))
-            .padding(horizontal = 9.dp, vertical = 4.dp),
+            .clip(RoundedCornerShape(Dimens.CornerPill))
+            .background(OverlayWhite12)
+            .border(1.dp, OverlayWhite18, RoundedCornerShape(Dimens.CornerPill))
+            .padding(horizontal = Dimens.SpacingChip, vertical = Dimens.ChipPaddingVertical),
     ) {
-        Text(text, color = Color.White.copy(alpha = 0.9f), fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+        Text(text, color = OverlayWhite90, fontSize = Dimens.TextSmall, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -207,10 +235,10 @@ private fun DarkChip(text: String) {
 private fun DotSep() {
     Box(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .size(3.dp)
+            .padding(horizontal = Dimens.SpacingSmall)
+            .size(Dimens.DotSeparatorSize)
             .clip(CircleShape)
-            .background(Color.White.copy(alpha = 0.4f)),
+            .background(OverlayWhite40),
     )
 }
 
@@ -219,9 +247,9 @@ private fun GlassCircleButton(onClick: () -> Unit, content: @Composable () -> Un
     Surface(
         onClick = onClick,
         shape = CircleShape,
-        color = Color.White.copy(alpha = 0.12f),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.22f)),
-        modifier = Modifier.size(48.dp),
+        color = OverlayWhite12,
+        border = BorderStroke(1.dp, OverlayWhite22),
+        modifier = Modifier.size(Dimens.ButtonHeight),
     ) {
         Box(contentAlignment = Alignment.Center) { content() }
     }
@@ -234,10 +262,11 @@ fun MovieDetailScreenEditorial(
     onBack: () -> Unit = {},
     onPlayTrailer: () -> Unit = {},
     serifFamily: FontFamily = FontFamily.Serif,
-    accent: Color = Color(0xFF5B3FE4),
+    accent: Color = EditorialAccent,
     modifier: Modifier = Modifier,
 ) {
     val scroll = rememberScrollState()
+    val months = stringArrayResource(R.array.months_short)
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -245,22 +274,22 @@ fun MovieDetailScreenEditorial(
             .verticalScroll(scroll),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier.fillMaxWidth().padding(Dimens.SpacingSmall),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, "Volver") }
+            IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, stringResource(R.string.action_back)) }
             Row {
-                IconButton(onClick = {}) { Icon(Icons.Filled.FavoriteBorder, "Favorito") }
-                IconButton(onClick = {}) { Icon(Icons.Filled.Share, "Compartir") }
+                IconButton(onClick = {}) { Icon(Icons.Filled.FavoriteBorder, stringResource(R.string.action_favorite)) }
+                IconButton(onClick = {}) { Icon(Icons.Filled.Share, stringResource(R.string.action_share)) }
             }
         }
 
-        Column(modifier = Modifier.padding(horizontal = 22.dp).padding(bottom = 32.dp)) {
+        Column(modifier = Modifier.padding(horizontal = Dimens.SpacingSection).padding(bottom = Dimens.SpacingBottom)) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(3f / 4f)
-                    .clip(RoundedCornerShape(18.dp))
+                    .clip(RoundedCornerShape(Dimens.CornerOverlay))
                     .background(Color.Black),
             ) {
                 AsyncImage(
@@ -270,95 +299,95 @@ fun MovieDetailScreenEditorial(
                     modifier = Modifier.fillMaxSize(),
                 )
                 Row(
-                    modifier = Modifier.align(Alignment.TopStart).padding(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier.align(Alignment.TopStart).padding(Dimens.SpacingMedium),
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingXSmall),
                 ) {
                     OverlayChip(ageLabelV(movie.adult))
-                    OverlayChip("HD")
+                    OverlayChip(stringResource(R.string.label_hd))
                 }
             }
 
-            Spacer(Modifier.height(22.dp))
+            Spacer(Modifier.height(Dimens.SpacingSection))
             Text(
                 text = "${fmtYearV(movie.releaseDate)} · ${langLabelV(movie.originalLanguage)}".uppercase(Locale.ROOT),
-                color = accent, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp,
+                color = accent, fontSize = Dimens.TextSmall, fontWeight = FontWeight.Bold, letterSpacing = Dimens.LetterSpacingLarge,
             )
 
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(Dimens.SpacingXSmall))
             Text(
                 text = movie.title,
-                fontFamily = serifFamily, fontSize = 30.sp,
-                fontWeight = FontWeight.SemiBold, lineHeight = 32.sp,
+                fontFamily = serifFamily, fontSize = Dimens.TextSectionTitle,
+                fontWeight = FontWeight.SemiBold, lineHeight = Dimens.LineHeightLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             if (movie.originalTitle != movie.title) {
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(Dimens.SpacingXXSmall))
                 Text(
-                    text = "Título original: ${movie.originalTitle}",
-                    fontSize = 13.sp, fontStyle = FontStyle.Italic,
+                    text = stringResource(R.string.original_title_prefix, movie.originalTitle),
+                    fontSize = Dimens.TextMedium, fontStyle = FontStyle.Italic,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
-            Spacer(Modifier.height(14.dp))
-            Divider()
+            Spacer(Modifier.height(Dimens.SpacingMediumLarge))
+            HorizontalDivider()
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                modifier = Modifier.fillMaxWidth().padding(vertical = Dimens.SpacingLarge),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 StatBlock(
                     big = "%.1f".format(movie.voteAverage),
-                    small = "de 10",
-                    leadingIcon = { Icon(Icons.Filled.Star, null, tint = Color(0xFFF5A524), modifier = Modifier.size(20.dp)) },
+                    small = stringResource(R.string.label_out_of_10),
+                    leadingIcon = { Icon(Icons.Filled.Star, null, tint = StarYellow, modifier = Modifier.size(Dimens.SpacingXXLarge)) },
                 )
                 VDivider()
-                StatBlock(big = fmtCountV(movie.voteCount), small = "votos")
+                StatBlock(big = fmtCountV(movie.voteCount), small = stringResource(R.string.label_votes))
                 VDivider()
-                StatBlock(big = fmtPopularityV(movie.popularity), small = "popularidad")
+                StatBlock(big = fmtPopularityV(movie.popularity), small = stringResource(R.string.label_popularity_stat))
             }
-            Divider()
+            HorizontalDivider()
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(Dimens.SpacingXXLarge))
             val first = movie.overview.firstOrNull()?.toString() ?: ""
             val rest = movie.overview.drop(1)
             Row(verticalAlignment = Alignment.Top) {
                 Text(
                     text = first, fontFamily = serifFamily,
-                    fontSize = 44.sp, fontWeight = FontWeight.Bold,
-                    color = accent, lineHeight = 40.sp,
-                    modifier = Modifier.padding(end = 6.dp, top = 4.dp),
+                    fontSize = Dimens.TextDropCap, fontWeight = FontWeight.Bold,
+                    color = accent, lineHeight = Dimens.LineHeightDropCap,
+                    modifier = Modifier.padding(end = Dimens.SpacingXSmall, top = Dimens.SpacingXXSmall),
                 )
-                Text(text = rest, fontSize = 15.5.sp, lineHeight = 23.sp, color = MaterialTheme.colorScheme.onSurface)
+                Text(text = rest, fontSize = Dimens.TextBodyLarge, lineHeight = Dimens.LineHeightStandard, color = MaterialTheme.colorScheme.onSurface)
             }
 
-            Spacer(Modifier.height(26.dp))
+            Spacer(Modifier.height(Dimens.SpacingBlock))
             val items = listOf(
-                "Estreno" to fmtDateV(movie.releaseDate),
-                "Idioma original" to langLabelV(movie.originalLanguage),
-                "Clasificación" to if (movie.adult) "Solo adultos" else "Todo público",
-                "ID" to "#${movie.id}",
+                stringResource(R.string.label_premiere) to fmtDateV(movie.releaseDate, months),
+                stringResource(R.string.label_original_language) to langLabelV(movie.originalLanguage),
+                stringResource(R.string.label_classification) to if (movie.adult) stringResource(R.string.classification_adults) else stringResource(R.string.classification_all),
+                stringResource(R.string.label_id) to "#${movie.id}",
             )
             items.forEach { (k, v) ->
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text(k, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.5.sp)
-                    Text(v, color = MaterialTheme.colorScheme.onSurface, fontSize = 13.5.sp, fontWeight = FontWeight.SemiBold)
+                    Text(k, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = Dimens.TextMediumLarge)
+                    Text(v, color = MaterialTheme.colorScheme.onSurface, fontSize = Dimens.TextMediumLarge, fontWeight = FontWeight.SemiBold)
                 }
-                Divider()
+                HorizontalDivider()
             }
 
-            Spacer(Modifier.height(22.dp))
+            Spacer(Modifier.height(Dimens.SpacingSection))
             Button(
                 onClick = onPlayTrailer,
-                modifier = Modifier.fillMaxWidth().height(52.dp),
-                shape = RoundedCornerShape(14.dp),
+                modifier = Modifier.fillMaxWidth().height(Dimens.CtaButtonHeight),
+                shape = RoundedCornerShape(Dimens.CornerCard),
                 colors = ButtonDefaults.buttonColors(containerColor = accent, contentColor = Color.White),
             ) {
                 Icon(Icons.Filled.PlayArrow, null)
-                Spacer(Modifier.width(8.dp))
-                Text("Ver tráiler", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                Spacer(Modifier.width(Dimens.SpacingSmall))
+                Text(stringResource(R.string.action_watch_trailer), fontWeight = FontWeight.Bold, fontSize = Dimens.TextButton)
             }
         }
     }
@@ -368,11 +397,11 @@ fun MovieDetailScreenEditorial(
 private fun OverlayChip(text: String) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(999.dp))
-            .background(Color.Black.copy(alpha = 0.55f))
-            .padding(horizontal = 9.dp, vertical = 4.dp),
+            .clip(RoundedCornerShape(Dimens.CornerPill))
+            .background(OverlayBlack55)
+            .padding(horizontal = Dimens.SpacingChip, vertical = Dimens.ChipPaddingVertical),
     ) {
-        Text(text, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+        Text(text, color = Color.White, fontSize = Dimens.TextSmall, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -383,10 +412,10 @@ private fun RowScope.StatBlock(
     leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-        if (leadingIcon != null) { leadingIcon(); Spacer(Modifier.width(8.dp)) }
+        if (leadingIcon != null) { leadingIcon(); Spacer(Modifier.width(Dimens.SpacingSmall)) }
         Column {
-            Text(big, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.onSurface)
-            Text(small, fontSize = 10.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(big, fontSize = Dimens.TextStatNumber, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.onSurface)
+            Text(small, fontSize = Dimens.TextXSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
@@ -396,7 +425,7 @@ private fun VDivider() {
     Box(
         modifier = Modifier
             .width(1.dp)
-            .height(36.dp)
+            .height(Dimens.StatDividerHeight)
             .background(MaterialTheme.colorScheme.outlineVariant),
     )
 }

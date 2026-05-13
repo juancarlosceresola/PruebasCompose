@@ -22,38 +22,50 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.pruebascompose.R
 import com.example.pruebascompose.domain.model.MovieBO
+import com.example.pruebascompose.ui.theme.Dimens
+import com.example.pruebascompose.ui.theme.OverlayBlack35
+import com.example.pruebascompose.ui.theme.OverlayBlack40
+import com.example.pruebascompose.ui.theme.OverlayWhite70
+import com.example.pruebascompose.ui.theme.OverlayWhite90
+import com.example.pruebascompose.ui.theme.StarYellow
 import java.util.Locale
 
-
-private const val TMDB_IMG = "https://image.tmdb.org/t/p"
-private fun posterUrl(path: String, size: String = "w500") = "$TMDB_IMG/$size$path"
-private fun backdropUrl(path: String, size: String = "w780") = "$TMDB_IMG/$size$path"
-
+// ── Pure format helpers (no strings) ─────────────────────────
 private fun fmtYear(date: String) = date.take(4)
 private fun fmtCount(n: Int): String =
     if (n >= 1000) "%.1f".format(n / 1000.0).removeSuffix(".0") + "k" else n.toString()
 private fun fmtPopularity(p: Double) = "%,d".format(p.toInt())
-private fun langLabel(code: String) = when (code) {
-    "en" -> "Inglés"; "es" -> "Español"; "fr" -> "Francés"
-    "ja" -> "Japonés"; "ko" -> "Coreano"; else -> code.uppercase(Locale.ROOT)
-}
-private fun ageLabel(adult: Boolean) = if (adult) "+18" else "TP"
-private fun fmtDate(date: String): String {
+private fun fmtDate(date: String, months: Array<String>): String {
     val parts = date.split("-")
     if (parts.size != 3) return date
-    val months = listOf("ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic")
     val d = parts[2].toIntOrNull() ?: return date
     val m = parts[1].toIntOrNull()?.minus(1)?.let { months.getOrNull(it) } ?: return date
     return "$d $m ${parts[0]}"
 }
+
+// ── Composable string helpers ─────────────────────────────────
+@Composable
+private fun langLabel(code: String): String = when (code) {
+    "en" -> stringResource(R.string.lang_english)
+    "es" -> stringResource(R.string.lang_spanish)
+    "fr" -> stringResource(R.string.lang_french)
+    "ja" -> stringResource(R.string.lang_japanese)
+    "ko" -> stringResource(R.string.lang_korean)
+    else -> code.uppercase(Locale.ROOT)
+}
+
+@Composable
+private fun ageLabel(adult: Boolean): String =
+    if (adult) stringResource(R.string.classification_adults_short)
+    else stringResource(R.string.classification_all_short)
 
 
 @Composable
@@ -65,7 +77,6 @@ fun MovieDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     val scroll = rememberScrollState()
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -74,27 +85,24 @@ fun MovieDetailScreen(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             BackdropWithPoster(movie)
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(Dimens.SpacingLarge))
             RatingRow(movie)
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(Dimens.SpacingLarge))
             ActionButtons(onPlayTrailer, onAddToList)
-            SectionHeader("Sinopsis")
+            SectionHeader(stringResource(R.string.label_synopsis))
             Text(
                 text = movie.overview,
-                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
+                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = Dimens.LineHeightNormal),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 18.dp),
+                modifier = Modifier.padding(horizontal = Dimens.SpacingXLarge),
             )
-            SectionHeader("Detalles")
+            SectionHeader(stringResource(R.string.label_details))
             DetailsGrid(movie)
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(Dimens.SpacingBottom))
         }
-
         TopActions(
-            onBack = { onBack() },
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .fillMaxWidth(),
+            onBack = onBack,
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
         )
     }
 }
@@ -102,81 +110,69 @@ fun MovieDetailScreen(
 
 @Composable
 private fun BackdropWithPoster(movie: MovieBO) {
+    val lang = langLabel(movie.originalLanguage)
+    val age = ageLabel(movie.adult)
+    val backdropUrl = "https://image.tmdb.org/t/p/w780${movie.backdropPath}"
+
     Box {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(16f / 10f),
-        ) {
+        Box(modifier = Modifier.fillMaxWidth().aspectRatio(16f / 10f)) {
             AsyncImage(
-                model = backdropUrl(movie.backdropPath),
+                model = backdropUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black),
-                colorFilter = ColorFilter.tint(
-                    Color.Black.copy(alpha = 0.35f),
-                    androidx.compose.ui.graphics.BlendMode.Darken,
-                ),
+                modifier = Modifier.fillMaxSize().background(Color.Black),
+                colorFilter = ColorFilter.tint(OverlayBlack35, androidx.compose.ui.graphics.BlendMode.Darken),
             )
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            0.0f to Color.Transparent,
-                            0.6f to Color.Transparent,
-                            1.0f to MaterialTheme.colorScheme.background,
-                        ),
+                modifier = Modifier.fillMaxSize().background(
+                    Brush.verticalGradient(
+                        0.0f to Color.Transparent,
+                        0.6f to Color.Transparent,
+                        1.0f to MaterialTheme.colorScheme.background,
                     ),
+                ),
             )
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 18.dp, end = 18.dp)
-                .offset(y = (20).dp),
+                .padding(horizontal = Dimens.SpacingXLarge)
+                .offset(y = Dimens.SpacingXXLarge),
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingMediumLarge),
         ) {
             AsyncImage(
                 model = movie.posterPath,
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .width(116.dp)
+                    .width(Dimens.DetailPosterWidth)
                     .aspectRatio(2f / 3f)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(Dimens.CornerMedium))
                     .background(Color.Black),
             )
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(bottom = 6.dp),
-            ) {
+            Column(modifier = Modifier.weight(1f).padding(bottom = Dimens.SpacingXSmall)) {
                 Text(
-                    text = "${fmtYear(movie.releaseDate)} · ${langLabel(movie.originalLanguage)} · ${ageLabel(movie.adult)}",
-                    color = Color.White.copy(alpha = 0.9f),
-                    fontSize = 11.sp,
+                    text = "${fmtYear(movie.releaseDate)} · $lang · $age",
+                    color = OverlayWhite90,
+                    fontSize = Dimens.TextSmall,
                     fontWeight = FontWeight.SemiBold,
                 )
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(Dimens.SpacingXXSmall))
                 Text(
                     text = movie.title,
                     color = Color.White,
-                    fontSize = 19.sp,
+                    fontSize = Dimens.TextPosterTitle,
                     fontWeight = FontWeight.ExtraBold,
-                    lineHeight = 22.sp,
+                    lineHeight = Dimens.LineHeightNormal,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (movie.originalTitle != movie.title) {
                     Text(
                         text = movie.originalTitle,
-                        color = Color.White.copy(alpha = 0.7f),
-                        fontSize = 12.sp,
+                        color = OverlayWhite70,
+                        fontSize = Dimens.TextMediumSmall,
                         fontStyle = FontStyle.Italic,
                     )
                 }
@@ -189,16 +185,20 @@ private fun BackdropWithPoster(movie: MovieBO) {
 @Composable
 private fun TopActions(onBack: () -> Unit, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+        modifier = modifier.padding(horizontal = Dimens.SpacingSmall, vertical = Dimens.SpacingSmall),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconCircleButton(onClick = { onBack() }) {
-            Icon(Icons.Filled.ArrowBack, contentDescription = "Volver", tint = Color.White)
+        IconCircleButton(onClick = onBack) {
+            Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back), tint = Color.White)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            IconCircleButton({}) { Icon(Icons.Filled.FavoriteBorder, contentDescription = "Favorito", tint = Color.White) }
-            IconCircleButton({}) { Icon(Icons.Filled.Share, contentDescription = "Compartir", tint = Color.White) }
+        Row(horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingXXSmall)) {
+            IconCircleButton({}) {
+                Icon(Icons.Filled.FavoriteBorder, contentDescription = stringResource(R.string.action_favorite), tint = Color.White)
+            }
+            IconCircleButton({}) {
+                Icon(Icons.Filled.Share, contentDescription = stringResource(R.string.action_share), tint = Color.White)
+            }
         }
     }
 }
@@ -207,10 +207,10 @@ private fun TopActions(onBack: () -> Unit, modifier: Modifier = Modifier) {
 private fun IconCircleButton(onClick: () -> Unit, content: @Composable () -> Unit) {
     Box(
         modifier = Modifier
-            .size(38.dp)
+            .size(Dimens.IconButtonSize)
             .clip(CircleShape)
-            .background(Color.Black.copy(alpha = 0.4f))
-            .clickable(onClick = { onClick() }),
+            .background(OverlayBlack40)
+            .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) { content() }
 }
@@ -219,39 +219,34 @@ private fun IconCircleButton(onClick: () -> Unit, content: @Composable () -> Uni
 @Composable
 private fun RatingRow(movie: MovieBO) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 18.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.SpacingXLarge),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                Icons.Filled.Star, contentDescription = null,
-                tint = Color(0xFFF5A524), modifier = Modifier.size(22.dp),
-            )
-            Spacer(Modifier.width(6.dp))
+            Icon(Icons.Filled.Star, contentDescription = null, tint = StarYellow, modifier = Modifier.size(Dimens.SpacingSection))
+            Spacer(Modifier.width(Dimens.SpacingXSmall))
             Column {
                 Text(
                     text = "%.1f".format(movie.voteAverage),
-                    fontWeight = FontWeight.Bold, fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold, fontSize = Dimens.TextScore,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
-                    text = "${fmtCount(movie.voteCount)} votos",
-                    fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = stringResource(R.string.votes_format, fmtCount(movie.voteCount)),
+                    fontSize = Dimens.TextSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
         Spacer(Modifier.weight(1f))
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "POPULARIDAD",
-                fontSize = 10.sp, fontWeight = FontWeight.SemiBold,
+                text = stringResource(R.string.label_popularity),
+                fontSize = Dimens.TextXXSmall, fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "↗ ${fmtPopularity(movie.popularity)}",
-                fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.popularity_format, fmtPopularity(movie.popularity)),
+                fontSize = Dimens.TextBody, fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -262,26 +257,24 @@ private fun RatingRow(movie: MovieBO) {
 @Composable
 private fun ActionButtons(onPlayTrailer: () -> Unit, onAddToList: () -> Unit) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 18.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.SpacingXLarge),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.TextXXSmall),
     ) {
         Button(
             onClick = onPlayTrailer,
-            modifier = Modifier.weight(1f).height(48.dp),
-            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.weight(1f).height(Dimens.ButtonHeight),
+            shape = RoundedCornerShape(Dimens.CornerMedium),
         ) {
             Icon(Icons.Filled.PlayArrow, contentDescription = null)
-            Spacer(Modifier.width(6.dp))
-            Text("Ver tráiler", fontWeight = FontWeight.Bold)
+            Spacer(Modifier.width(Dimens.SpacingXSmall))
+            Text(stringResource(R.string.action_watch_trailer), fontWeight = FontWeight.Bold)
         }
         OutlinedButton(
             onClick = onAddToList,
-            modifier = Modifier.height(48.dp),
-            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.height(Dimens.ButtonHeight),
+            shape = RoundedCornerShape(Dimens.CornerMedium),
         ) {
-            Text("+ Mi lista", fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.action_add_to_list), fontWeight = FontWeight.SemiBold)
         }
     }
 }
@@ -291,35 +284,32 @@ private fun ActionButtons(onPlayTrailer: () -> Unit, onAddToList: () -> Unit) {
 private fun SectionHeader(text: String) {
     Text(
         text = text.uppercase(Locale.ROOT),
-        fontSize = 11.sp, fontWeight = FontWeight.Bold,
-        letterSpacing = 1.sp,
+        fontSize = Dimens.TextSmall, fontWeight = FontWeight.Bold,
+        letterSpacing = Dimens.LetterSpacingMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(start = 18.dp, end = 18.dp, top = 24.dp, bottom = 10.dp),
+        modifier = Modifier.padding(
+            start = Dimens.SpacingXLarge, end = Dimens.SpacingXLarge,
+            top = Dimens.SpacingSectionTop, bottom = Dimens.TextXXSmall
+        ),
     )
 }
 
 @Composable
 private fun DetailsGrid(movie: MovieBO) {
+    val months = stringArrayResource(R.array.months_short)
     val cells = listOf(
-        "Estreno" to fmtDate(movie.releaseDate),
-        "Idioma original" to langLabel(movie.originalLanguage),
-        "Clasificación" to ageLabel(movie.adult),
-        "TMDB ID" to "#${movie.id}",
+        stringResource(R.string.label_premiere) to fmtDate(movie.releaseDate, months),
+        stringResource(R.string.label_original_language) to langLabel(movie.originalLanguage),
+        stringResource(R.string.label_classification) to ageLabel(movie.adult),
+        stringResource(R.string.label_tmdb_id) to "#${movie.id}",
     )
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 18.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.SpacingXLarge),
+        verticalArrangement = Arrangement.spacedBy(Dimens.SpacingMediumLarge),
     ) {
         cells.chunked(2).forEach { row ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
-            ) {
-                row.forEach { (k, v) ->
-                    DetailCell(k, v, modifier = Modifier.weight(1f))
-                }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingMediumLarge)) {
+                row.forEach { (k, v) -> DetailCell(k, v, modifier = Modifier.weight(1f)) }
                 if (row.size < 2) Spacer(Modifier.weight(1f))
             }
         }
@@ -331,32 +321,23 @@ private fun DetailCell(label: String, value: String, modifier: Modifier = Modifi
     Column(modifier = modifier) {
         Text(
             text = label.uppercase(Locale.ROOT),
-            fontSize = 10.sp, fontWeight = FontWeight.SemiBold,
-            letterSpacing = 0.6.sp,
+            fontSize = Dimens.TextXXSmall, fontWeight = FontWeight.SemiBold,
+            letterSpacing = Dimens.LetterSpacingSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(Dimens.DotSeparatorSize))
         Text(
             text = value,
-            fontSize = 13.5.sp, fontWeight = FontWeight.SemiBold,
+            fontSize = Dimens.TextMediumLarge, fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
 
-
 val SampleMovie = MovieBO(
-    adult = false,
-    backdropPath = "/abc123.jpg",
-    id = 1241982,
-    originalLanguage = "en",
+    adult = false, backdropPath = "/abc123.jpg", id = 1241982, originalLanguage = "en",
     originalTitle = "The Super Mario Galaxy Movie",
-    overview = "Mario y sus amigos cruzan galaxias para detener a Bowser y devolver la corona perdida de la Princesa Peach.",
-    popularity = 1284.572,
-    posterPath = "/xyz789.jpg",
-    releaseDate = "2026-04-03",
-    title = "The Super Mario Galaxy Movie",
-    video = false,
-    voteAverage = 8.4,
-    voteCount = 3127,
+    overview = "Mario y sus amigos cruzan galaxias para detener a Bowser.",
+    popularity = 1284.572, posterPath = "/xyz789.jpg", releaseDate = "2026-04-03",
+    title = "The Super Mario Galaxy Movie", video = false, voteAverage = 8.4, voteCount = 3127,
 )

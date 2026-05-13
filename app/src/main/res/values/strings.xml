@@ -2,9 +2,75 @@
     <string name="app_name">PelisCompose_v1</string>
     <string name="app_key" translatable="false">9cc6082faac1afc533d8e44dd2d3ef73</string>
     <string name="base_url" translatable="false">https://api.themoviedb.org/3/</string>
+    <string name="token" translatable="false">Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5Y2M2MDgyZmFhYzFhZmM1MzNkOGU0NGRkMmQzZWY3MyIsIm5iZiI6MTcyNjU5MzQxMC40MTEzMzUsInN1YiI6IjYxMTEwYWM0Mzg3NjUxMDA2MDRiZDVjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.skXz7S0Zb7kAOFQuxZw4njZ0r24GWPQwB-IqawGPxe8</string>
+
+    <!-- Bottom navigation tabs -->
     <string name="general_tab">General</string>
     <string name="popular_tab">Popular</string>
-    <string name="last_tab">Ultimas</string>
+    <string name="last_tab">Últimas</string>
     <string name="top_tab">Top Rated</string>
-    <string name ="token" translatable="false">Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5Y2M2MDgyZmFhYzFhZmM1MzNkOGU0NGRkMmQzZWY3MyIsIm5iZiI6MTcyNjU5MzQxMC40MTEzMzUsInN1YiI6IjYxMTEwYWM0Mzg3NjUxMDA2MDRiZDVjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.skXz7S0Zb7kAOFQuxZw4njZ0r24GWPQwB-IqawGPxe8</string>
+
+    <!-- Actions -->
+    <string name="action_watch_trailer">Ver tráiler</string>
+    <string name="action_add_to_list">+ Mi lista</string>
+    <string name="action_back">Volver</string>
+    <string name="action_favorite">Favorito</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_play">Reproducir</string>
+
+    <!-- Section labels -->
+    <string name="label_synopsis">Sinopsis</string>
+    <string name="label_details">Detalles</string>
+    <string name="label_popularity">POPULARIDAD</string>
+    <string name="label_hd">HD</string>
+
+    <!-- Detail labels -->
+    <string name="label_premiere">Estreno</string>
+    <string name="label_original_language">Idioma original</string>
+    <string name="label_classification">Clasificación</string>
+    <string name="label_original_title">Título original</string>
+    <string name="label_premiere_date">Fecha de estreno</string>
+    <string name="label_tmdb_id">TMDB ID</string>
+    <string name="label_score">Puntuación</string>
+    <string name="label_id">ID</string>
+
+    <!-- Stats -->
+    <string name="label_votes">votos</string>
+    <string name="label_popularity_stat">popularidad</string>
+    <string name="label_out_of_10">de 10</string>
+    <string name="rating_format">★ %1$.1f</string>
+    <string name="votes_format">%1$s votos</string>
+    <string name="popularity_format">↗ %1$s</string>
+    <string name="score_out_of_10"> / 10</string>
+    <string name="original_title_prefix">Título original: %1$s</string>
+
+    <!-- Classification -->
+    <string name="classification_adults_long">Solo adultos (+18)</string>
+    <string name="classification_adults">Solo adultos</string>
+    <string name="classification_all">Todo público</string>
+    <string name="classification_all_short">TP</string>
+    <string name="classification_adults_short">+18</string>
+
+    <!-- Languages -->
+    <string name="lang_english">Inglés</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_french">Francés</string>
+    <string name="lang_japanese">Japonés</string>
+    <string name="lang_korean">Coreano</string>
+
+    <!-- Month abbreviations -->
+    <string-array name="months_short">
+        <item>ene</item>
+        <item>feb</item>
+        <item>mar</item>
+        <item>abr</item>
+        <item>may</item>
+        <item>jun</item>
+        <item>jul</item>
+        <item>ago</item>
+        <item>sep</item>
+        <item>oct</item>
+        <item>nov</item>
+        <item>dic</item>
+    </string-array>
 </resources>
