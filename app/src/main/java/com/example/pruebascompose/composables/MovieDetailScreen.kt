@@ -258,7 +258,7 @@ private fun RatingRow(movie: MovieBO) {
 private fun ActionButtons(onPlayTrailer: () -> Unit, onAddToList: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.SpacingXLarge),
-        horizontalArrangement = Arrangement.spacedBy(Dimens.TextXXSmall),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.SpacingSmall),
     ) {
         Button(
             onClick = onPlayTrailer,
@@ -289,7 +289,7 @@ private fun SectionHeader(text: String) {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(
             start = Dimens.SpacingXLarge, end = Dimens.SpacingXLarge,
-            top = Dimens.SpacingSectionTop, bottom = Dimens.TextXXSmall
+            top = Dimens.SpacingSectionTop, bottom = Dimens.SpacingXXSmall
         ),
     )
 }
