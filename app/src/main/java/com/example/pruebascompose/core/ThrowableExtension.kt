@@ -7,7 +7,6 @@ fun Throwable.parseException() : BusinessException =
     if (this is BusinessException) {
         this
     } else {
-       // Timber.i(this)
         BusinessException(cause = this)
     }
 

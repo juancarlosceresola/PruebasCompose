@@ -38,7 +38,6 @@ import com.example.pruebascompose.ui.theme.OverlayWhite90
 import com.example.pruebascompose.ui.theme.StarYellow
 import java.util.Locale
 
-// ── Pure format helpers (no strings) ─────────────────────────
 private fun fmtYear(date: String) = date.take(4)
 private fun fmtCount(n: Int): String =
     if (n >= 1000) "%.1f".format(n / 1000.0).removeSuffix(".0") + "k" else n.toString()
@@ -51,7 +50,6 @@ private fun fmtDate(date: String, months: Array<String>): String {
     return "$d $m ${parts[0]}"
 }
 
-// ── Composable string helpers ─────────────────────────────────
 @Composable
 private fun langLabel(code: String): String = when (code) {
     "en" -> stringResource(R.string.lang_english)

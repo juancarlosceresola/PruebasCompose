@@ -4,7 +4,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 object Dimens {
-    // ── Spacing ──────────────────────────────────────────────
     val SpacingXXSmall    = 4.dp
     val SpacingXSmall     = 6.dp
     val SpacingSmall      = 8.dp
@@ -19,7 +18,6 @@ object Dimens {
     val SpacingBlock      = 26.dp
     val SpacingBottom     = 32.dp
 
-    // ── Component sizes ──────────────────────────────────────
     val IconButtonSize       = 38.dp
     val ButtonHeight         = 48.dp
     val CtaButtonHeight      = 52.dp
@@ -30,14 +28,12 @@ object Dimens {
     val StatDividerHeight    = 36.dp
     val ChipPaddingVertical  = 4.dp
 
-    // ── Corner radius ─────────────────────────────────────────
     val CornerSmall   = 8.dp
     val CornerMedium  = 12.dp
     val CornerCard    = 14.dp
     val CornerOverlay = 18.dp
     val CornerPill    = 999.dp
 
-    // ── Text sizes ────────────────────────────────────────────
     val TextXXSmall     = 10.sp
     val TextXSmall      = 10.5.sp
     val TextSmall       = 11.sp
@@ -54,7 +50,6 @@ object Dimens {
     val TextSectionTitle = 30.sp
     val TextDropCap     = 44.sp
 
-    // ── Line heights ──────────────────────────────────────────
     val LineHeightBody     = 18.sp
     val LineHeightBodyMed  = 20.sp
     val LineHeightMedium   = 21.sp
@@ -64,7 +59,6 @@ object Dimens {
     val LineHeightLarge    = 32.sp
     val LineHeightDropCap  = 40.sp
 
-    // ── Letter spacing ────────────────────────────────────────
     val LetterSpacingSmall  = 0.6.sp
     val LetterSpacingMedium = 1.sp
     val LetterSpacingLarge  = 1.4.sp
