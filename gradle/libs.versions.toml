@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.2"
+agp = "8.6.1"
 kotlin = "2.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -20,6 +20,7 @@ timber = "5.0.1"
 navigation ="2.8.9"
 kotlinx-serialization-json = "1.7.3"
 kotlinx-coroutines = "1.9.0"
+tvCompose = "1.0.0"
 
 [libraries]
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -56,6 +57,8 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "hilt"}
 hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref= "hiltNavigationCompose"}
 coil-compose ={module = "io.coil-kt:coil-compose", version.ref = "coil" }
+tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "tvCompose" }
+tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "tvCompose" }
 
 
 [plugins]

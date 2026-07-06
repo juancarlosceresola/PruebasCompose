@@ -23,3 +23,4 @@ rootProject.name = "PelisCompose_v1"
 include(":app")
 include(":domain")
 include(":data")
+include(":tv")
